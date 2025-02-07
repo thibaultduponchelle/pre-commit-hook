@@ -9,10 +9,13 @@ jobs:
     - uses: actions/checkout@v3
     - name: Generate .patch
       run: perl Porting/make_dot_patch.pl
-    - name: Create a Release
-      uses: elgohr/Github-Release-Action@v5
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        title: ${{ github.sha }}
-
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: ${{ git.sha1 }}
+        prerelease: true
+        title: "Development Build"
+        files: |
+          README.md
+          *.patch
